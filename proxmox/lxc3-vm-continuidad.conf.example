@@ -1,0 +1,12 @@
+# Configuración LXC3 vm-continuidad en Proxmox VE
+# ID: 102
+arch: amd64
+cores: 1
+features: nesting=1
+hostname: vm-continuidad
+memory: 2048
+net0: name=eth0,bridge=vmbr0,gw=192.168.1.1,ip=192.168.1.120/24,type=veth
+ostype: ubuntu
+rootfs: local-zfs:subvol-102-disk-0,size=30G
+swap: 512
+unprivileged: 1

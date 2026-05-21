@@ -1,0 +1,12 @@
+# Configuración LXC1 vm-app en Proxmox VE
+# ID: 100
+arch: amd64
+cores: 2
+features: nesting=1
+hostname: vm-app
+memory: 4096
+net0: name=eth0,bridge=vmbr0,gw=192.168.1.1,ip=192.168.1.100/24,type=veth
+ostype: ubuntu
+rootfs: local-zfs:subvol-100-disk-0,size=20G
+swap: 512
+unprivileged: 1
