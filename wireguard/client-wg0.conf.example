@@ -1,0 +1,9 @@
+[Interface]
+Address = 10.10.0.2/24
+PrivateKey = REEMPLAZAR_CON_CLAVE_PRIVADA_CLIENTE
+
+[Peer]
+PublicKey = REEMPLAZAR_CON_CLAVE_PUBLICA_SERVIDOR
+Endpoint = IP_PUBLICA_GCP:51820
+AllowedIPs = 10.10.0.0/24
+PersistentKeepalive = 25

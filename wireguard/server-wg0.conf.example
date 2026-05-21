@@ -1,0 +1,16 @@
+[Interface]
+Address = 10.10.0.1/24
+ListenPort = 51820
+PrivateKey = REEMPLAZAR_CON_CLAVE_PRIVADA_SERVIDOR
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o ens4 -j MASQUERADE
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o ens4 -j MASQUERADE
+
+[Peer]
+# LXC1 — vm-app Paipa
+PublicKey = REEMPLAZAR_CON_CLAVE_PUBLICA_LXC1
+AllowedIPs = 10.10.0.2/32
+
+[Peer]
+# VM Réplica MariaDB GCP
+PublicKey = REEMPLAZAR_CON_CLAVE_PUBLICA_REPLICA
+AllowedIPs = 10.10.0.3/32

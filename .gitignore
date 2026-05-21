@@ -1,0 +1,20 @@
+# Variables de entorno con contraseñas reales
+.env
+**/.env
+
+# Claves WireGuard reales
+*.key
+*-private.key
+
+# Datos de PrestaShop y MariaDB
+lxc1-app/data/
+vm2-db/data/
+
+# Backups
+*.tar.gz
+*.sql
+
+# Sistema
+.DS_Store
+*.swp
+node_modules/

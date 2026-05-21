@@ -1,0 +1,22 @@
+services:
+  prestashop:
+    image: prestashop/prestashop:8.1-apache
+    container_name: paipa-shop
+    restart: unless-stopped
+    environment:
+      DB_SERVER: 192.168.1.110
+      DB_PORT: 3306
+      DB_NAME: prestashop
+      DB_USER: ps_user
+      DB_PASSWD: ${DB_PASS}
+      PS_DOMAIN: ${PS_DOMAIN}
+      PS_INSTALL_AUTO: 1
+      PS_LANGUAGE: es
+      PS_COUNTRY: co
+      PS_FOLDER_ADMIN: admin-paipa
+      ADMIN_MAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWD: ${ADMIN_PASS}
+    volumes:
+      - ./data:/var/www/html
+    ports:
+      - "8080:80"

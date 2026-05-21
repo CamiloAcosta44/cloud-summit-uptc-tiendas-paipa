@@ -1,0 +1,42 @@
+services:
+  mariadb:
+    image: mariadb:10.6
+    container_name: paipa-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: prestashop
+      MYSQL_USER: ps_user
+      MYSQL_PASSWORD: ${DB_PASS}
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - "192.168.1.110:3306:3306"
+    networks:
+      - db-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: >
+      --server-id=1
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --binlog-do-db=prestashop
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: paipa-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+    ports:
+      - "127.0.0.1:8081:80"
+    networks:
+      - db-net
+
+networks:
+  db-net:
+    driver: bridge
