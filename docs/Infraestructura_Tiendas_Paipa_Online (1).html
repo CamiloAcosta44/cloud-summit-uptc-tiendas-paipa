@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infraestructura — Tiendas Paipa Online</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #f8f8f6; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; padding: 40px 20px; }
+  .page { background: white; width: 960px; padding: 48px; border-radius: 12px; box-shadow: 0 2px 24px rgba(0,0,0,0.08); }
+
+  .title-main { font-size: 22px; font-weight: 700; color: #1F3864; text-align: center; margin-bottom: 6px; }
+  .title-sub  { font-size: 13px; color: #666; text-align: center; margin-bottom: 36px; }
+  .zone-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .zone-sub   { font-size: 11.5px; color: #555; }
+  .note-text  { font-size: 11px; color: #666; line-height: 1.6; }
+  .legend-item { font-size: 11.5px; color: #444; margin-bottom: 5px; }
+
+  .zone { border-radius: 10px; padding: 18px 20px; margin-bottom: 12px; border: 1.5px solid; }
+  .zone-inner { border-radius: 8px; padding: 14px 16px; border: 1px solid; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+  .chip { border-radius: 5px; padding: 5px 11px; border: 1px solid; font-size: 11.5px; font-weight: 500; white-space: nowrap; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 10px; }
+  .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+
+  .arrow-wrap { display: flex; flex-direction: column; align-items: center; margin: 6px 0; gap: 1px; }
+  .arrow-label { font-size: 11px; color: #888; }
+  .arrow-line  { width: 1.5px; height: 20px; background: #aaa; }
+  .arrow-head  { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #aaa; }
+
+  .z-gray   { background: #F5F5F3; border-color: #BFBDB5; }
+  .z-amber  { background: #FFFBF0; border-color: #D4A017; }
+  .z-blue   { background: #EEF4FC; border-color: #3A7CC4; }
+  .z-purple { background: #F5F0FC; border-color: #7C44C0; }
+  .z-teal   { background: #EAF7F4; border-color: #1A8A78; }
+  .z-pink   { background: #FDF0F5; border-color: #C4336A; }
+  .z-coral  { background: #FEF3EE; border-color: #C45820; }
+  .z-green  { background: #EDF7F1; border-color: #2A8A50; }
+
+  .t-gray   { color: #4A4840; }
+  .t-amber  { color: #8B6000; }
+  .t-blue   { color: #1A5AA0; }
+  .t-purple { color: #5A2A9A; }
+  .t-teal   { color: #0A6A58; }
+  .t-pink   { color: #A01848; }
+  .t-coral  { color: #A03010; }
+  .t-green  { color: #1A6A38; }
+
+  .ch-amber  { background: #FFFBF0; border-color: #D4A017; color: #8B6000; }
+  .ch-blue   { background: #EEF4FC; border-color: #3A7CC4; color: #1A5AA0; }
+  .ch-teal   { background: #EAF7F4; border-color: #1A8A78; color: #0A6A58; }
+  .ch-pink   { background: #FDF0F5; border-color: #C4336A; color: #A01848; }
+  .ch-coral  { background: #FEF3EE; border-color: #C45820; color: #A03010; }
+  .ch-green  { background: #EDF7F1; border-color: #2A8A50; color: #1A6A38; }
+  .ch-gray   { background: #F5F5F3; border-color: #BFBDB5; color: #4A4840; }
+  .ch-purple { background: #F5F0FC; border-color: #7C44C0; color: #5A2A9A; }
+
+  .tunnel-box { background: #EEF4FC; border: 1.5px dashed #3A7CC4; border-radius: 8px; padding: 10px 18px; text-align: center; margin: 0 auto; width: 460px; }
+  .tunnel-title { font-size: 13px; font-weight: 700; color: #1A5AA0; }
+  .tunnel-sub   { font-size: 11px; color: #555; margin-top: 2px; }
+
+  .badge { display: inline-block; font-size: 10px; font-weight: 700; border-radius: 4px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
+  .badge-lxc { background: #EAF7F4; color: #0A6A58; border: 1px solid #1A8A78; }
+  .badge-vm  { background: #FEF3EE; color: #A03010; border: 1px solid #C45820; }
+  .badge-new { background: #FFF0FC; color: #8A2A7A; border: 1px solid #C44AAA; }
+
+  .divider { border: none; border-top: 1px dashed #DDD; margin: 14px 0; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .ip-badge { font-size: 10px; font-weight: 700; background: #F0F4FF; border: 1px solid #B0C4E8; color: #1A3A8A; border-radius: 4px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; font-family: 'Consolas', monospace; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="title-main">Infraestructura implementada — Tiendas Paipa Online</div>
+  <div class="title-sub">Docker Compose · LXC · VM · Proxmox VE 8 · Google Cloud · Cloudflare · Cloud Summit UPTC — Grupo 6</div>
+
+  <!-- CLIENTE -->
+  <div class="zone z-gray" style="text-align:center; padding: 14px 20px;">
+    <span class="zone-title t-gray">Cliente final</span>
+    <span class="zone-sub"> — https://prestashop.monster · Navegador web y móvil</span>
+  </div>
+
+  <div class="arrow-wrap"><div class="arrow-line"></div><div class="arrow-head"></div><div class="arrow-label">HTTPS 443</div></div>
+
+  <!-- CLOUDFLARE -->
+  <div class="zone z-amber">
+    <div class="zone-title t-amber">Cloudflare — borde global</div>
+    <div class="chips">
+      <span class="chip ch-amber">CDN · caché de imágenes</span>
+      <span class="chip ch-amber">WAF · reglas anti-carding</span>
+      <span class="chip ch-amber">Protección DDoS</span>
+      <span class="chip ch-amber">SSL Full</span>
+      <span class="chip ch-amber">Dominio prestashop.monster</span>
+      <span class="chip ch-amber">Nameservers emely + khalid.ns.cloudflare.com</span>
+    </div>
+  </div>
+
+  <div class="arrow-wrap"><div class="arrow-line"></div><div class="arrow-head"></div><div class="arrow-label">proxy HTTPS</div></div>
+
+  <!-- GOOGLE CLOUD zona principal -->
+  <div class="zone z-blue">
+    <div class="zone-title t-blue">Google Cloud · southamerica-east1-b
+      <span class="ip-badge">34.95.135.114</span>
+      <span class="badge badge-new">IP estática</span>
+    </div>
+    <div class="zone-sub">vm-publica-paipa · VM e2-micro · Ubuntu 22.04 · 1 GB RAM</div>
+
+    <div class="two-col" style="margin-top:14px;">
+      <div class="zone-inner z-teal">
+        <div class="zone-title t-teal">Nginx reverse proxy</div>
+        <div class="chips">
+          <span class="chip ch-teal">proxy_pass 10.10.0.2:8080</span>
+          <span class="chip ch-teal">Let's Encrypt SSL</span>
+          <span class="chip ch-teal">Redirección HTTP → HTTPS</span>
+          <span class="chip ch-teal">server_name prestashop.monster</span>
+        </div>
+      </div>
+      <div class="zone-inner z-teal">
+        <div class="zone-title t-teal">WireGuard servidor</div>
+        <div class="chips">
+          <span class="chip ch-teal">wg0 · 10.10.0.1/24</span>
+          <span class="chip ch-teal">UDP 51820</span>
+          <span class="chip ch-teal">Peer LXC1 → 10.10.0.2</span>
+          <span class="chip ch-teal">Peer réplica → 10.10.0.3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Réplica MariaDB en GCP -->
+    <div class="zone-inner z-coral" style="margin-top: 12px;">
+      <div class="zone-title t-coral">VM réplica MariaDB · us-central1-a
+        <span class="ip-badge">35.253.11.22</span>
+        <span class="badge badge-new">Always Free</span>
+      </div>
+      <div class="zone-sub" style="margin-bottom: 8px;">vm-replica-db · e2-micro · Ubuntu 22.04 · 1 GB RAM · WireGuard 10.10.0.3</div>
+      <div class="chips">
+        <span class="chip ch-coral">MariaDB 10.6 réplica · solo lectura</span>
+        <span class="chip ch-coral">Slave_IO_Running: Yes</span>
+        <span class="chip ch-coral">Slave_SQL_Running: Yes</span>
+        <span class="chip ch-coral">Replicación async desde VM2</span>
+        <span class="chip ch-coral">DR · analítica · PII nunca sale de Colombia</span>
+        <span class="chip ch-coral">Ley 1581 cumplida</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TUNNEL -->
+  <div class="arrow-wrap" style="margin: 10px 0;">
+    <div class="arrow-line" style="height:14px; background: #3A7CC4;"></div>
+    <div class="tunnel-box">
+      <div class="tunnel-title">Túnel WireGuard cifrado</div>
+      <div class="tunnel-sub">ChaCha20-Poly1305 · Keepalive 25 s · 10.10.0.1 ↔ 10.10.0.2 · Handshake monitorizado en Uptime Kuma</div>
+    </div>
+    <div class="arrow-line" style="height:14px; background: #3A7CC4;"></div>
+    <div class="arrow-head" style="border-top-color: #3A7CC4;"></div>
+  </div>
+
+  <!-- PROXMOX -->
+  <div class="zone z-purple">
+    <div class="zone-title t-purple">Proxmox VE 8 · Paipa, Boyacá
+      <span class="ip-badge">192.168.1.50</span>
+    </div>
+    <div class="zone-sub">pve-paipa · i5 11ª gen · 16 GB RAM · vmbr0 · 192.168.1.0/24 · gateway 192.168.1.1</div>
+
+    <div class="three-col" style="margin-top: 16px;">
+
+      <!-- LXC1 -->
+      <div class="zone-inner z-pink">
+        <div class="zone-title t-pink">
+          LXC1 · vm-app
+          <span class="badge badge-lxc">LXC</span>
+          <span class="ip-badge">192.168.1.100</span>
+        </div>
+        <div class="zone-sub" style="margin-bottom:10px;">4 GB RAM · 2 vCPU · 20 GB disco</div>
+        <div class="chips" style="flex-direction:column; gap:5px;">
+          <span class="chip ch-pink">PrestaShop 8.1</span>
+          <span class="chip ch-pink">Apache · puerto 8080</span>
+          <span class="chip ch-pink">PHP 8.1</span>
+          <span class="chip ch-pink">Docker Compose</span>
+          <span class="chip ch-pink">WireGuard cliente · 10.10.0.2</span>
+          <span class="chip ch-pink">NAT reenvío → VM2:3306 (iptables)</span>
+          <span class="chip ch-pink">iptables-persistent activo</span>
+        </div>
+        <hr class="divider">
+        <div class="note-text">
+          Contenedor LXC · ~50 MB overhead<br>
+          Arranque &lt; 5 s<br>
+          SSH habilitado · PermitRootLogin<br>
+          Snapshots: ubuntu-base · prestashop-funcional · infraestructura-completa
+        </div>
+      </div>
+
+      <!-- VM2 -->
+      <div class="zone-inner z-coral">
+        <div class="zone-title t-coral">
+          VM2 · vm-db
+          <span class="badge badge-vm">VM</span>
+          <span class="ip-badge">192.168.1.110</span>
+        </div>
+        <div class="zone-sub" style="margin-bottom:10px;">3 GB RAM · 2 vCPU · 20 GB disco</div>
+        <div class="chips" style="flex-direction:column; gap:5px;">
+          <span class="chip ch-coral">MariaDB 10.6 primaria</span>
+          <span class="chip ch-coral">Binlog activo · server-id=1</span>
+          <span class="chip ch-coral">Réplica async → GCP réplica</span>
+          <span class="chip ch-coral">phpMyAdmin · auth HTTP básica</span>
+          <span class="chip ch-coral">puerto 8082 con nginx + htpasswd</span>
+          <span class="chip ch-coral">UFW · solo LXC1→3306</span>
+          <span class="chip ch-coral">Docker Compose</span>
+        </div>
+        <hr class="divider">
+        <div class="note-text">
+          VM completa · kernel aislado<br>
+          enp6s18 · IP estática forzada<br>
+          Usuario: adminpaipa<br>
+          Snapshots: ubuntu-base · prestashop-funcional · infraestructura-completa
+        </div>
+      </div>
+
+      <!-- LXC3 -->
+      <div class="zone-inner z-green">
+        <div class="zone-title t-green">
+          LXC3 · vm-continuidad
+          <span class="badge badge-lxc">LXC</span>
+          <span class="ip-badge">192.168.1.120</span>
+        </div>
+        <div class="zone-sub" style="margin-bottom:10px;">2 GB RAM · 1 vCPU · 30 GB disco</div>
+        <div class="chips" style="flex-direction:column; gap:5px;">
+          <span class="chip ch-green">Uptime Kuma · puerto 3001</span>
+          <span class="chip ch-green">Monitor PrestaShop HTTP</span>
+          <span class="chip ch-green">Monitor MariaDB TCP 3306</span>
+          <span class="chip ch-green">Monitor Proxmox HTTPS</span>
+          <span class="chip ch-green">Monitor túnel ping GCP</span>
+          <span class="chip ch-green">Backup cron 2AM via SSH</span>
+          <span class="chip ch-green">Verificación tar -tzf</span>
+          <span class="chip ch-green">Alerta Telegram si falla</span>
+          <span class="chip ch-green">Retención 7 días</span>
+        </div>
+        <hr class="divider">
+        <div class="note-text">
+          Contenedor LXC · ~50 MB overhead<br>
+          SSH keys → LXC1 y VM2<br>
+          Token Telegram configurado<br>
+          Snapshots: ubuntu-base · prestashop-funcional · infraestructura-completa
+        </div>
+      </div>
+    </div>
+
+    <!-- Bridge -->
+    <div class="zone-inner z-amber" style="margin-top:14px; text-align:center;">
+      <div class="zone-title t-amber">Bridge vmbr0 · 192.168.1.0/24 · gateway 192.168.1.1</div>
+      <div class="zone-sub" style="margin-top:4px;">Snapshots manuales en cada fase · LXC nesting habilitado en LXC1 y LXC3</div>
+    </div>
+  </div>
+
+  <!-- Leyenda -->
+  <div class="zone z-gray" style="margin-top:14px;">
+    <div class="section-label">Decisiones clave de diseño implementadas</div>
+    <div class="legend-item">✦ <strong>LXC1 y LXC3</strong> como contenedores LXC · ahorro ~600 MB RAM vs VMs completas · nesting habilitado para Docker</div>
+    <div class="legend-item">✦ <strong>VM2</strong> como VM completa con kernel aislado · mayor estabilidad e integridad para datos transaccionales</div>
+    <div class="legend-item">✦ <strong>Replicación MariaDB async</strong> vía túnel WireGuard + NAT en LXC1 · DR sin exponer PII · Ley 1581 cumplida</div>
+    <div class="legend-item">✦ <strong>Docker Compose</strong> sobre k3s · complejidad proporcional al tamaño del prototipo académico</div>
+    <div class="legend-item">✦ <strong>Cloudflare + Let's Encrypt</strong> · HTTPS end-to-end · Ley 1480 Art. 50 lit. f cumplido</div>
+    <div class="legend-item">✦ <strong>Alertas Telegram</strong> en backups · verificación de integridad automática con tar -tzf · retención 7 días</div>
+    <div class="legend-item">✦ <strong>phpMyAdmin</strong> protegido con autenticación HTTP básica vía Nginx en puerto 8082</div>
+  </div>
+
+</div>
+</body>
+</html>
